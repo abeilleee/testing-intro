@@ -1,6 +1,7 @@
-function notImplemented() {
-  throw new Error("Корзина ещё не реализована. Сначала прочитайте тесты.");
-}
+const PROMOCODE = "SAVE10";
+const DELIVERY_COST = 30000;
+const DISCOUNT_THRESHOLD = 20000;
+const FREE_DELIVERY_THRESHOLD = 50000;
 
 function assertQuantity(quantity, stock) {
   if (quantity <= 0)
@@ -43,8 +44,22 @@ function calculateCartSubtotal(cart) {
 
   return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 }
-function calculateOrderTotal() {
-  return notImplemented();
+
+function calculateOrderTotal(cart, promocode) {
+  const subtotal = calculateCartSubtotal(cart);
+  const delivery = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_COST;
+  let discount = 0;
+
+  if (subtotal >= DISCOUNT_THRESHOLD) {
+    discount = promocode === PROMOCODE ? subtotal * 0.1 : 0;
+  }
+
+  return {
+    subtotal,
+    discount,
+    delivery,
+    total: subtotal - discount + delivery,
+  };
 }
 
 const cartApi = {
