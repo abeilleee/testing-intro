@@ -38,8 +38,10 @@ function removeFromCart(cart, id) {
   return cart.filter((item) => item.id !== id);
 }
 
-function calculateCartSubtotal() {
-  return notImplemented();
+function calculateCartSubtotal(cart) {
+  if (cart.length === 0) return 0;
+
+  return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 }
 function calculateOrderTotal() {
   return notImplemented();
